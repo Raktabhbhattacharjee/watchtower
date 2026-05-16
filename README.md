@@ -185,7 +185,6 @@ This project is heavily inspired by Anthropic’s engineering article:
 
 - [Building Effective Agents — Anthropic Engineering](https://www.anthropic.com/engineering/building-effective-agents)
 
-- :contentReference[oaicite:0]{index=0}
 
 The architecture and implementation philosophy of Watchtower focuses on:
 - composable workflows
