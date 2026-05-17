@@ -1,8 +1,13 @@
-def collect_logs():
+import asyncio
+
+
+async def collect_logs():
+    await asyncio.sleep(1)
     return "Collected recent application logs"
 
 
-def collect_metrics():
+async def collect_metrics():
+    await asyncio.sleep(1)
     return "Collected latency and error-rate metrics"
 
 

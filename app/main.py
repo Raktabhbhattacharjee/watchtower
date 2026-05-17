@@ -34,7 +34,7 @@ async def main():
 
     workflow = IncidentWorkflow()
 
-    result = workflow.run(plan)
+    result = await workflow.run(plan)
 
     summarizer = IncidentSummarizer(llm=client)
 

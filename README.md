@@ -29,35 +29,32 @@ The LLM is treated as one subsystem inside a larger orchestration runtime — no
 
 ```mermaid
 flowchart TD
-    Title[Watchtower - AI Incident Investigation System]
 
-    Title --> A[Incident Input]
-    A --> B[1. Analysis Stage\nLLM]
-    B --> C[Structured Analysis State\nPydantic Validation]
-    C --> D[2. Planning Stage\nLLM]
-    D --> E[Execution Plan]
-    E --> F[3. Tool Orchestration Layer]
-    F --> G[Tool Results]
-    G --> H[4. Summarization Stage\nLLM]
-    H --> I[Final Investigation Summary]
+    A[Incident Input] --> B[Analysis Stage - GeminiClient]
 
-    classDef title fill:#1E2937,stroke:#0EA5E9,stroke-width:4px,color:#E0F2FE
-    classDef input fill:#334155,stroke:#64748B,color:#F1F5F9
-    classDef llm fill:#0EA5E9,stroke:#0369A1,color:#0F172A
-    classDef state fill:#14B8A6,stroke:#0F766E,color:#0F172A
-    classDef tools fill:#8B5CF6,stroke:#6D28D9,color:#F1F5F9
-    classDef final fill:#22C55E,stroke:#15803D,color:#0F172A
+    B --> C[IncidentAnalysis Schema]
+    C --> D[Pydantic Validation]
 
-    class Title title
-    class A input
-    class B,D,H llm
-    class C,E,G state
-    class F tools
-    class I final
+    D --> E[Planning Stage - InvestigationPlanner]
 
-    B -. "Gemini SDK" .-> C
-    D -. "Gemini SDK" .-> E
-    H -. "Gemini SDK" .-> I
+    E --> F[InvestigationPlan Schema]
+    F --> G[Pydantic Validation]
+
+    G --> H[IncidentWorkflow]
+
+    H --> I[Tool Registry]
+
+    I --> J[collect_logs]
+    I --> K[collect_metrics]
+
+    J --> L[Tool Results]
+    K --> L
+
+    L --> M[Summarization Stage - IncidentSummarizer]
+
+    M --> N[IncidentSummary Schema]
+    N --> O[Pydantic Validation]
+     O --> P[Final Investigation Summary]
 ```
 
 ---
@@ -76,10 +73,11 @@ flowchart TD
 
 ### Workflow Layer
 - Multi-stage orchestration pipeline
-- Prompt chaining
+- Prompt chaining workflows
 - Planning-based execution
 - Tool orchestration
 - Feedback-driven summarization
+- Parallel workflow architecture concepts
 
 ### Tool Layer
 - Dynamic tool registry
@@ -239,46 +237,39 @@ Likely deployment-related regression
 
 ---
 
-## Orchestration Patterns
-
-Watchtower implements several patterns from Anthropic's engineering philosophy:
+## Architectural Patterns
 
 - Augmented LLM systems
 - Routing workflows
 - Prompt chaining workflows
+- Parallel workflow architecture concepts
 - Tool orchestration
 - Feedback-driven reasoning
 - Structured intermediate state
 - Typed orchestration pipelines
-
 ---
 
 ## Roadmap
 
-**Workflow Evolution**
-- Parallel workflow execution
-- Evaluator-optimizer workflows
-- Controlled retry loops
-- Stateful orchestration runtime
-- Workflow tracing
+...
 
-**Tooling**
-- Real observability integrations (log ingestion, metrics ingestion, incident timeline analysis)
+## Architectural Learnings
 
-**Infrastructure**
-- FastAPI API layer
-- Async orchestration runtime
-- Persistent workflow state
-- Structured execution logs
+This project focuses heavily on understanding the architecture beneath modern AI frameworks.
 
-**Agentic Systems**
-- Controlled agent loops
-- Human-in-the-loop checkpoints
-- Multi-provider orchestration
-- Evaluation pipelines
+Core learning areas include:
 
----
+- LLM orchestration pipelines
+- Workflow decomposition
+- Structured state transitions
+- Prompt chaining
+- Tool-driven reasoning systems
+- Feedback loops
+- Deterministic execution layers
+- Backend-oriented AI systems engineering
+
+The project intentionally prioritizes architectural understanding over framework abstraction.
 
 ## Status
 
-Early-stage orchestration runtime prototype. The goal is a deep, first-principles understanding of production-oriented AI systems engineering — through explicit workflow design and minimal abstraction.
+Early-stage orchestration runtime prototype...
