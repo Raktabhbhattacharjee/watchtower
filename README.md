@@ -1,90 +1,117 @@
 # Watchtower
 
-Watchtower is an orchestration-first AI incident analysis system built with raw Python and the Gemini SDK.
+Watchtower is an orchestration-first AI incident investigation system built with raw Python and the Gemini SDK.
 
-The goal of this project is to learn and implement real-world GenAI systems engineering principles inspired by Anthropic’s engineering philosophy around effective agents and orchestration systems.
+The project is a deliberate exercise in understanding real-world GenAI systems engineering — inspired by [Anthropic's guide to building effective agents](https://www.anthropic.com/engineering/building-effective-agents). Rather than reaching for a heavy framework, Watchtower is built from the ground up to expose the underlying mechanics of:
 
-This project intentionally avoids heavy framework abstraction in the early stages to better understand:
-- LLM runtime architecture
-- structured outputs
-- orchestration workflows
-- typed state management
-- provider abstraction
-- backend-driven AI systems
-
----
-
-# Engineering Philosophy
-
-Watchtower follows several core principles:
-
-- Start simple
-- Prefer composable workflows over unnecessary autonomy
-- Treat agents as orchestration systems, not magic AI
-- Focus on state, validation, observability, retries, and tool design
-- Avoid unnecessary abstraction layers until they are truly needed
-
-Core idea:
-
-```text
-LLMs generate reasoning.
-Software systems control execution.
-```
-
-The LLM is treated as one subsystem inside a larger orchestration runtime.
+- Orchestration systems
+- Workflow pipelines
+- Structured generation
+- Typed runtime state
+- Tool execution
+- Feedback loops
+- Agentic workflows
 
 ---
 
-# Current Features
+## Engineering Philosophy
 
-- Gemini SDK integration
-- Centralized configuration using Pydantic Settings
-- Structured outputs with schema validation
-- Typed orchestration state using Pydantic
+Watchtower follows a **workflow-first architecture**.
+
+The core principle:
+
+> LLMs generate reasoning. Software systems control execution.
+
+The LLM is treated as one subsystem inside a larger orchestration runtime — not as the runtime itself. This means:
+
+- Composable workflows over unnecessary autonomy
+- Explicit orchestration over hidden framework abstraction
+- Typed runtime state
+- Deterministic execution
+- Structured intermediate state
+- Validation-first design
+- Provider abstraction
+- Observability-oriented architecture
+
+---
+
+## Architecture
+
+### Watchtower Incident Investigation Pipeline
+
+```mermaid
+flowchart TD
+    Title[Watchtower - AI Incident Investigation System] 
+    
+    Title --> A[Incident Input]
+
+    A --> B[1. Analysis Stage\nLLM]
+    B --> C[Structured Analysis State\nPydantic Validation]
+    C --> D[2. Planning Stage\nLLM]
+    D --> E[Execution Plan]
+    E --> F[3. Tool Orchestration Layer]
+    F --> G[Tool Results]
+    G --> H[4. Summarization Stage\nLLM]
+    H --> I[Final Investigation Summary]
+
+    classDef title fill:#1E2937,stroke:#0EA5E9,stroke-width:4px,color:#E0F2FE,rx:25,ry:25
+    classDef input fill:#334155,stroke:#64748B,color:#F1F5F9
+    classDef llm fill:#0EA5E9,stroke:#0369A1,color:#0F172A,rx:15,ry:15
+    classDef state fill:#14B8A6,stroke:#0F766E,color:#0F172A,rx:12,ry:12
+    classDef tools fill:#8B5CF6,stroke:#6D28D9,color:#F1F5F9,rx:15,ry:15
+    classDef final fill:#22C55E,stroke:#15803D,color:#0F172A,rx:15,ry:15
+
+    class Title title
+    class A input
+    class B,D,H llm
+    class C,E,G state
+    class F tools
+    class I final
+
+    B -. "Gemini SDK" .-> C
+    D -. "Gemini SDK" .-> E
+    H -. "Gemini SDK" .-> I
+
+---
+
+## Features
+
+### LLM Layer
+- Gemini SDK integration via raw provider SDK
 - Provider abstraction layer (`GeminiClient`)
-- Async-ready architecture
-- Incident analysis workflow foundation
+- Structured generation pipeline
+
+### Schema & Validation Layer
+- Typed orchestration state using Pydantic
+- Runtime schema validation
+- Structured intermediate workflow state
+
+### Workflow Layer
+- Multi-stage orchestration pipeline
+- Prompt chaining
+- Planning-based execution
+- Tool orchestration
+- Feedback-driven summarization
+
+### Tool Layer
+- Dynamic tool registry
+- Tool execution runtime
+- Controlled execution environment
 
 ---
 
-# Tech Stack
+## Workflow Stages
 
-- Python 3.13+
-- FastAPI
-- Google Gemini SDK
-- Pydantic
-- uv
+### 1. Incident Analysis
 
----
+Transforms unstructured incident text into validated structured state.
 
-# Current Architecture
-
-```text
-Request
-    ↓
-GeminiClient
-    ↓
-Gemini API
-    ↓
-Structured Output
-    ↓
-Pydantic Validation
-    ↓
-Typed Runtime State
+**Input:**
 ```
-
----
-
-# Example Structured Output
-
-Input:
-
-```text
 "API latency increased after deployment and error rates are rising rapidly."
 ```
 
-Output:
-
+**Output:**
 ```json
 {
   "issue_type": "Performance Degradation",
@@ -95,25 +122,76 @@ Output:
 }
 ```
 
+### 2. Investigation Planning
+
+The LLM generates a structured execution plan.
+
+```json
+{
+  "steps": ["collect_logs", "collect_metrics"],
+  "reasoning": "Latency and error spikes require logs and metrics investigation."
+}
+```
+
+### 3. Tool Execution
+
+Python orchestrates deterministic tool execution using a controlled tool registry.
+
+Current tools: `collect_logs`, `collect_metrics`
+
+### 4. Final Summarization
+
+The LLM receives tool results and generates a structured final summary.
+
+```json
+{
+  "root_cause": "Likely deployment-related performance regression",
+  "recommended_action": "Inspect deployment changes and compare metrics before and after deployment",
+  "confidence": "medium"
+}
+```
+
 ---
 
-# Project Structure
+## Tech Stack
 
-```text
+| Layer | Technology |
+|---|---|
+| Language | Python 3.13+ |
+| API Framework | FastAPI |
+| LLM Provider | Google Gemini SDK |
+| Validation | Pydantic + Pydantic Settings |
+| Package Manager | uv |
+
+---
+
+## Project Structure
+
+```
 watchtower/
 │
 ├── app/
+│   ├── agents/
+│   │   └── runtime.py
+│   │
 │   ├── core/
 │   │   └── config.py
 │   │
 │   ├── llm/
 │   │   └── client.py
 │   │
-│   ├── schemas/
-│   │   └── incident.py
+│   ├── workflows/
+│   │   ├── planner.py
+│   │   ├── summarizer.py
+│   │   └── incident_workflow.py
 │   │
-│   ├── test_config.py
-│   └── test_structured.py
+│   ├── schemas/
+│   │   ├── incident.py
+│   │   ├── plan.py
+│   │   └── summary.py
+│   │
+│   ├── tools.py
+│   └── main.py
 │
 ├── .env
 ├── pyproject.toml
@@ -122,94 +200,97 @@ watchtower/
 
 ---
 
-# Setup
+## Setup
 
-## Clone Repository
-
+**Clone the repository:**
 ```bash
 git clone <repo-url>
 cd watchtower
 ```
 
----
-
-## Create Virtual Environment
-
+**Create and activate a virtual environment:**
 ```bash
 uv venv
+source .venv/bin/activate        # macOS/Linux
+.venv\Scripts\Activate.ps1       # Windows PowerShell
 ```
 
----
-
-## Activate Environment
-
-### Windows PowerShell
-
-```powershell
-.venv\Scripts\Activate.ps1
-```
-
----
-
-## Install Dependencies
-
+**Install dependencies:**
 ```bash
 uv sync
 ```
 
----
-
-## Configure Environment Variables
-
-Create a `.env` file:
-
-```env
+**Configure environment variables** — create a `.env` file at the project root:
+```
 GEMINI_API_KEY=your_api_key
 ```
 
----
-
-# Run Structured Output Test
-
-From the project root:
-
+**Run:**
 ```bash
-uv run python -m app.test_structured
+uv run python -m app.main
 ```
 
 ---
 
-# References
+## Example Output
 
-This project is heavily inspired by Anthropic’s engineering article:
+```
+ANALYSIS:
+issue_type='Performance Degradation'
+severity='Critical'
 
-- [Building Effective Agents — Anthropic Engineering](https://www.anthropic.com/engineering/building-effective-agents)
+PLAN:
+steps=['collect_logs', 'collect_metrics']
 
+RESULT:
+Collected logs and metrics
 
-The architecture and implementation philosophy of Watchtower focuses on:
-- composable workflows
-- structured orchestration
-- typed runtime state
-- tool-driven execution
-- observability-first design
-- minimizing unnecessary abstraction
+SUMMARY:
+Likely deployment-related regression
+```
 
 ---
 
-# Roadmap
+## Orchestration Patterns
 
-- Workflow routing
-- Tool execution layer
-- Retry and failure handling
-- Observability and tracing
-- Streaming support
-- Async orchestration pipelines
-- Stateful workflows
+Watchtower implements several patterns from Anthropic's engineering philosophy:
+
+- Augmented LLM systems
+- Routing workflows
+- Prompt chaining workflows
+- Tool orchestration
+- Feedback-driven reasoning
+- Structured intermediate state
+- Typed orchestration pipelines
+
+---
+
+## Roadmap
+
+**Workflow Evolution**
+- Parallel workflow execution
+- Evaluator-optimizer workflows
+- Controlled retry loops
+- Stateful orchestration runtime
+- Workflow tracing
+
+**Tooling**
+- Real observability integrations (log ingestion, metrics ingestion, incident timeline analysis)
+
+**Infrastructure**
+- FastAPI API layer
+- Async orchestration runtime
+- Persistent workflow state
+- Structured execution logs
+
+**Agentic Systems**
 - Controlled agent loops
-- Evaluation and feedback systems
+- Human-in-the-loop checkpoints
+- Multi-provider orchestration
+- Evaluation pipelines
 
 ---
 
-# Status
+## Status
 
-Early-stage orchestration runtime prototype focused on learning production-oriented AI systems engineering principles.
+Early-stage orchestration runtime prototype. The goal is a deep, first-principles understanding of production-oriented AI systems engineering — through explicit workflow design and minimal abstraction.
