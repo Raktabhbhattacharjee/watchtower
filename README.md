@@ -1,16 +1,8 @@
 # Watchtower
 
-Watchtower is an orchestration-first AI incident investigation system built with raw Python and the Gemini SDK.
+**An orchestration-first AI incident investigation system** built with raw Python + Gemini SDK.
 
-The project is a deliberate exercise in understanding real-world GenAI systems engineering — inspired by [Anthropic's guide to building effective agents](https://www.anthropic.com/engineering/building-effective-agents). Rather than reaching for a heavy framework, Watchtower is built from the ground up to expose the underlying mechanics of:
-
-- Orchestration systems
-- Workflow pipelines
-- Structured generation
-- Typed runtime state
-- Tool execution
-- Feedback loops
-- Agentic workflows
+A deliberate exercise in real-world GenAI systems engineering — inspired by [Anthropic's guide to building effective agents](https://www.anthropic.com/engineering/building-effective-agents).
 
 ---
 
@@ -18,20 +10,9 @@ The project is a deliberate exercise in understanding real-world GenAI systems e
 
 Watchtower follows a **workflow-first architecture**.
 
-The core principle:
+> **LLMs generate reasoning. Software systems control execution.**
 
-> LLMs generate reasoning. Software systems control execution.
-
-The LLM is treated as one subsystem inside a larger orchestration runtime — not as the runtime itself. This means:
-
-- Composable workflows over unnecessary autonomy
-- Explicit orchestration over hidden framework abstraction
-- Typed runtime state
-- Deterministic execution
-- Structured intermediate state
-- Validation-first design
-- Provider abstraction
-- Observability-oriented architecture
+The LLM is treated as one subsystem inside a larger orchestration runtime.
 
 ---
 
@@ -71,8 +52,6 @@ flowchart TD
     B -. "Gemini SDK" .-> C
     D -. "Gemini SDK" .-> E
     H -. "Gemini SDK" .-> I
-
----
 
 ## Features
 
