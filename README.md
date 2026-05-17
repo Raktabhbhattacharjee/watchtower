@@ -12,20 +12,26 @@ Watchtower follows a **workflow-first architecture**.
 
 > **LLMs generate reasoning. Software systems control execution.**
 
-The LLM is treated as one subsystem inside a larger orchestration runtime.
+The LLM is treated as one subsystem inside a larger orchestration runtime — not as the runtime itself. This means:
+
+- Composable workflows over unnecessary autonomy
+- Explicit orchestration over hidden framework abstraction
+- Typed runtime state
+- Deterministic execution
+- Structured intermediate state
+- Validation-first design
+- Provider abstraction
+- Observability-oriented architecture
 
 ---
 
 ## Architecture
 
-### Watchtower Incident Investigation Pipeline
-
 ```mermaid
 flowchart TD
-    Title[Watchtower - AI Incident Investigation System] 
-    
-    Title --> A[Incident Input]
+    Title[Watchtower - AI Incident Investigation System]
 
+    Title --> A[Incident Input]
     A --> B[1. Analysis Stage\nLLM]
     B --> C[Structured Analysis State\nPydantic Validation]
     C --> D[2. Planning Stage\nLLM]
@@ -35,12 +41,12 @@ flowchart TD
     G --> H[4. Summarization Stage\nLLM]
     H --> I[Final Investigation Summary]
 
-    classDef title fill:#1E2937,stroke:#0EA5E9,stroke-width:4px,color:#E0F2FE,rx:25,ry:25
+    classDef title fill:#1E2937,stroke:#0EA5E9,stroke-width:4px,color:#E0F2FE
     classDef input fill:#334155,stroke:#64748B,color:#F1F5F9
-    classDef llm fill:#0EA5E9,stroke:#0369A1,color:#0F172A,rx:15,ry:15
-    classDef state fill:#14B8A6,stroke:#0F766E,color:#0F172A,rx:12,ry:12
-    classDef tools fill:#8B5CF6,stroke:#6D28D9,color:#F1F5F9,rx:15,ry:15
-    classDef final fill:#22C55E,stroke:#15803D,color:#0F172A,rx:15,ry:15
+    classDef llm fill:#0EA5E9,stroke:#0369A1,color:#0F172A
+    classDef state fill:#14B8A6,stroke:#0F766E,color:#0F172A
+    classDef tools fill:#8B5CF6,stroke:#6D28D9,color:#F1F5F9
+    classDef final fill:#22C55E,stroke:#15803D,color:#0F172A
 
     class Title title
     class A input
@@ -52,6 +58,9 @@ flowchart TD
     B -. "Gemini SDK" .-> C
     D -. "Gemini SDK" .-> E
     H -. "Gemini SDK" .-> I
+```
+
+---
 
 ## Features
 
