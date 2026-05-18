@@ -29,10 +29,10 @@ The LLM is treated as one subsystem inside a larger orchestration runtime — no
 
 ```mermaid
 flowchart TD
-    A[Incident Input] --> B[Analysis Stage - GeminiClient]
+    A[Incident Input] --> B[Analysis Stage]
     B --> C[IncidentAnalysis Schema]
     C --> D[Pydantic Validation]
-    D --> E[Planning Stage-InvestigationPlanner]
+    D --> E[Planning Stage]
     E --> F[InvestigationPlan Schema]
     F --> G[Pydantic Validation]
     G --> H[IncidentWorkflow]
@@ -41,7 +41,7 @@ flowchart TD
     I --> K[collect_metrics]
     J --> L[Tool Results]
     K --> L
-    L --> M[Summarization Stage-IncidentSummarizer]
+    L --> M[Summarization Stage\nIncidentSummarizer]
     M --> N[IncidentSummary Schema]
     N --> O[Pydantic Validation]
     O --> P[Final Investigation Summary]
